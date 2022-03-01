@@ -1,9 +1,18 @@
 package io.github.MurilloNS.domain.entity;
 
+import javax.persistence.*;
+
+@Entity
 public class ItemPedido {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @ManyToOne
     private Pedido pedido;
+
+    @ManyToOne
     private Produto produto;
     private Integer quantidade;
 
