@@ -1,2 +1,8 @@
-package io.github.MurilloNS.exception;public class PedidoNaoEncontradoException {
+package io.github.MurilloNS.exception;
+
+public class PedidoNaoEncontradoException extends RuntimeException {
+
+    public PedidoNaoEncontradoException() {
+        super("Pedido não encontrado");
+    }
 }

@@ -1,2 +1,7 @@
-package io.github.MurilloNS.domain.enums;public enum StatusPedido {
+package io.github.MurilloNS.domain.enums;
+
+public enum StatusPedido {
+
+    REALIZADO,
+    CANCELADO;
 }
