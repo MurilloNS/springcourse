@@ -2,6 +2,7 @@ package io.github.MurilloNS.service.impl;
 
 import io.github.MurilloNS.domain.entity.Usuario;
 import io.github.MurilloNS.domain.repository.UsuarioRepository;
+import io.github.MurilloNS.exception.SenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,16 @@ public class UsuarioServiceImpl implements UserDetailsService {
         return repository.save(usuario);
     }
 
+    public UserDetails autenticar(Usuario usuario){
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+
+        if(senhasBatem){
+            return user;
+        }
+        throw new SenhaInvalidaException();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = repository.findByLogin(username)
@@ -32,9 +43,10 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
         String[] roles = usuario.isAdmin() ? new String[]{"ADMIN", "USER"} : new String[]{"USER"};
 
-        return User.builder()
+        return User
+                .builder()
                 .username(usuario.getLogin())
-                .username(usuario.getSenha())
+                .password(usuario.getSenha())
                 .roles(roles)
                 .build();
     }
